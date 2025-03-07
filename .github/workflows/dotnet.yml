@@ -21,8 +21,8 @@ jobs:
       with:
         dotnet-version: 9.0.x
     - name: Restore dependencies
-      run: dotnet restore ./BizFalconApi.sln
+      run: dotnet restore BizFalconApi/BizFalconApi.sln
     - name: Build
       run: dotnet build BizFalconApi/BizFalconApi.csproj --no-restore
     - name: Test
-      run: dotnet test ./BizFalconApi.sln --no-build --verbosity normal
+      run: dotnet test BizFalconApi/BizFalconApi.sln --no-build --verbosity normal
