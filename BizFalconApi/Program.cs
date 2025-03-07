@@ -1,5 +1,7 @@
 using BizFalconApi.Data;
+using BizFalconApi.Interfaces;
 using BizFalconApi.Middlewares;
+using BizFalconApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -18,6 +20,10 @@ builder.Services.AddControllers();
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Own services
+builder.Services.AddScoped<ITenantProvider, TenantProvider>();
+
 
 // Add Authentication (JWT)
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
