@@ -398,3 +398,35 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# ** Ignore React (Node.js) dependencies**
+frontend/node_modules/
+frontend/.turbo/
+frontend/.next/
+frontend/.nuxt/
+frontend/.parcel-cache/
+frontend/.vite/
+frontend/dist/
+frontend/build/
+
+# ** Ignore npm debug and logs**
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ** Ignore coverage reports**
+coverage/
+frontend/coverage/
+
+# ** Ignore TypeScript build output**
+frontend/*.tsbuildinfo
+
+# ** Ignore logs**
+logs
+frontend/logs
+*.log
+npm-debug.log
+yarn-debug.log
+pnpm-debug.log
