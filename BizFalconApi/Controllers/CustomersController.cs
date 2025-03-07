@@ -21,12 +21,23 @@ namespace BizFalconApi.Controllers
             return await _context.Customers.ToListAsync();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Tenant>> GetCustomerById(Guid id)
+        {
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return Ok(customer);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Customer>> CreateCustomer(Customer customer)
         {
-            _context.Customers.Add(customer);
+            await _context.Customers.AddAsync(customer);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetCustomers), new { id = customer.Id }, customer);
+            return CreatedAtAction(nameof(GetCustomerById), new { id = customer.Id }, customer);
         }
     }
 }
