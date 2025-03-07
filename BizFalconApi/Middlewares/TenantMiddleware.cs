@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Primitives;
+﻿using BizFalconApi.Interfaces;
+using Microsoft.Extensions.Primitives;
 
 namespace BizFalconApi.Middlewares
 {
@@ -12,13 +13,13 @@ namespace BizFalconApi.Middlewares
         }
 
         // Middleware to manage RLS (row level security), we inject the tenantId to send it on each http request
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, ITenantProvider tenantProvider)
         {
             if (context.Request.Headers.TryGetValue("X-Tenant-ID", out StringValues tenantIdValues))
             {
                 if (Guid.TryParse(tenantIdValues.FirstOrDefault(), out Guid tenantId))
                 {
-                    context.Items["TenantId"] = tenantId;
+                    tenantProvider.TenantId = tenantId;
                 }
             }
 
