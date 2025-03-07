@@ -1,16 +1,17 @@
-﻿using BizFalconApi.Models;
+﻿using BizFalconApi.Interfaces;
+using BizFalconApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BizFalconApi.Data
 {
     public class ApplicationDbContext: DbContext
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ITenantProvider _tenantProvider;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ITenantProvider tenantProvider)
             : base(options)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _tenantProvider = tenantProvider;
         }
 
         public DbSet<Tenant> Tenants { get; set; }
@@ -35,10 +36,10 @@ namespace BizFalconApi.Data
         // RLS
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var tenantId = _httpContextAccessor.HttpContext?.Items["TenantId"] as Guid?;
+            var tenantId = _tenantProvider.TenantId;
             if (tenantId.HasValue)
             {
-                await Database.ExecuteSqlRawAsync($"SET app.tenant_id = '{tenantId.Value}';");
+                await Database.ExecuteSqlInterpolatedAsync($"SET app.tenant_id = {tenantId.Value}", cancellationToken);
             }
             return await base.SaveChangesAsync(cancellationToken);
         }
